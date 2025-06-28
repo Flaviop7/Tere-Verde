@@ -25,7 +25,4 @@ Integrantes do projeto: João Vitor Queiroz, Flavio Pinheiro F. Martins
 - **JavaScript** puro (sem bibliotecas externas)  
 - **Google Fonts** (Fonte Poppins)
 
----
-
-## 📁 Estrutura de Pastas
 
