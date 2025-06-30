@@ -4,438 +4,74 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Circuito Tere Verde</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style>
-body {
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
-    background-color: #ffffff;
-    color: #333;
-    line-height: 1.6;
-}
-:root {
-    --primary-color: #2c6b2f;
-    --secondary-color: #4CAF50;
-    --light-gray: #f4f4f4;
-    --white: #ffffff;
-    --shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-.container {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-header {
-    background: var(--primary-color);
-    color: var(--white);
-    padding: 1rem 0;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
-header .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-header h1 { margin: 0; font-size: 1.8rem; }
-#admin-login-btn {
-    background: var(--secondary-color);
-    color: var(--white);
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: background-color 0.3s;
-}
-#admin-login-btn:hover { background-color: #45a049; }
-main { padding: 2rem 0; }
-section { margin-bottom: 2.5rem; }
-h2, h3 {
-    color: var(--primary-color);
-    margin-bottom: 1rem;
-    border-bottom: 2px solid var(--light-gray);
-    padding-bottom: 0.5rem;
-}
-#trail-filter { margin-bottom: 1.5rem; }
-.filter-btn {
-    background: var(--light-gray);
-    border: 1px solid #ddd;
-    padding: 8px 16px;
-    margin: 0 5px;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-.filter-btn:hover { background: #ddd; }
-.filter-btn.active {
-    background: var(--primary-color);
-    color: var(--white);
-    border-color: var(--primary-color);
-}
-.trail-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.5rem;
-}
-.trail-card {
-    background: var(--white);
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: var(--shadow);
-    cursor: pointer;
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-.trail-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-}
-.trail-card img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-}
-.trail-card-content {
-    padding: 1rem;
-}
-.trail-card-content h4 {
-    margin-top: 0;
-    color: var(--primary-color);
-}
-.difficulty-badge {
-    display: inline-block;
-    padding: 4px 10px;
-    border-radius: 12px;
-    font-size: 0.8rem;
-    color: var(--white);
-    font-weight: 600;
-}
-.difficulty-badge.Fácil { background-color: #4CAF50; }
-.difficulty-badge.Média { background-color: #fdd835; color: #333; }
-.difficulty-badge.Difícil { background-color: #e53935; }
-#event-list .event-item {
-    background: var(--light-gray);
-    padding: 1rem;
-    border-left: 5px solid var(--secondary-color);
-    margin-bottom: 1rem;
-    border-radius: 5px;
-}
-footer {
-    background: #333;
-    color: var(--white);
-    text-align: center;
-    padding: 1rem 0;
-    margin-top: 2rem;
-}
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 2000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.6);
-}
-.modal-content {
-    background-color: var(--white);
-    margin: 5% auto;
-    padding: 30px;
-    border-radius: 8px;
-    width: 90%;
-    max-width: 700px;
-    position: relative;
-    animation: fadeIn 0.5s;
-}
-.login-modal-content {
-    max-width: 400px;
-}
-.close-btn {
-    color: #aaa;
-    position: absolute;
-    top: 15px;
-    right: 25px;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-}
-#modal-body h3 { font-size: 1.8rem; }
-#modal-body img {
-    width: 100%;
-    height: auto;
-    max-height: 300px;
-    object-fit: cover;
-    border-radius: 8px;
-    margin-bottom: 1rem;
-}
-#modal-body .info-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    margin: 1rem 0;
-}
-#modal-body .info-item {
-    background: var(--light-gray);
-    padding: 10px;
-    border-radius: 5px;
-}
-#login-form {
-    display: flex;
-    flex-direction: column;
-}
-#login-form label {
-    margin-top: 1rem;
-    font-weight: 600;
-}
-#login-form input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-top: 5px;
-}
-#login-form button {
-    margin-top: 1.5rem;
-    padding: 12px;
-    background: var(--primary-color);
-    color: var(--white);
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1rem;
-}
-@keyframes fadeIn {
-    from {opacity: 0; transform: scale(0.95);}
-    to {opacity: 1; transform: scale(1);}
-}
-@media (max-width: 768px) {
-    header h1 { font-size: 1.5rem; }
-    #admin-login-btn {
-        padding: 8px 10px;
-        font-size: 0.9rem;
-    }
-    .trail-grid {
-        grid-template-columns: 1fr;
-    }
-}
-    </style>
 </head>
 <body>
-<header>
-    <div class="container">
-        <h1>Circuito Tere Verde</h1>
-        <button id="admin-login-btn">Login do Administrador</button>
-    </div>
-</header>
 
-<main class="container">
-    <section id="intro">
-        <h2>Explore a Biodiversidade e o Ecoturismo de Teresópolis</h2>
-        <p>Descubra as trilhas, a fauna, a flora e os eventos dos parques de Teresópolis em um só lugar. Uma aventura te espera!</p>
-    </section>
-
-    <section id="trails">
-        <h3>Parques e Trilhas</h3>
-        <div id="trail-filter">
-            <span>Filtrar por dificuldade:</span>
-            <button class="filter-btn active" data-filter="all">Todas</button>
-            <button class="filter-btn" data-filter="Fácil">Fácil</button>
-            <button class="filter-btn" data-filter="Média">Média</button>
-            <button class="filter-btn" data-filter="Difícil">Difícil</button>
+    <header>
+        <div class="container">
+            <h1>Circuito Tere Verde</h1>
+           <a href="/templates/admin_dashboard.html"></a> <button id="admin-login-btn">Login do Administrador</button>
         </div>
-        <div id="trail-list" class="trail-grid"></div>
-    </section>
+    </header>
 
-    <section id="events">
-        <h3>Eventos e Novidades</h3>
-        <div id="event-list"></div>
-    </section>
-</main>
+    <main class="container">
+        <section id="intro">
+            <h2>Explore a Biodiversidade e o Ecoturismo de Teresópolis</h2>
+            <p>Descubra as trilhas, a fauna, a flora e os eventos dos parques de Teresópolis em um só lugar. Uma aventura te espera!</p>
+        </section>
 
-<footer>
-    <div class="container">
-        <p>&copy; 2025 Circuito Tere Verde. Todos os direitos reservados.</p>
-    </div>
-</footer>
-
-<!-- Modais -->
-<div id="trail-modal" class="modal">
-    <div class="modal-content">
-        <span class="close-btn">&times;</span>
-        <div id="modal-body"></div>
-    </div>
-</div>
-
-<div id="login-modal" class="modal">
-    <div class="modal-content login-modal-content">
-        <span class="close-btn">&times;</span>
-        <h4>Acesso Restrito</h4>
-        <form id="login-form">
-            <label for="username">Usuário:</label>
-            <input type="text" id="username" name="username" required>
-            <label for="password">Senha:</label>
-            <input type="password" id="password" name="password" required minlength="8" maxlength="12">
-            <button type="submit">Entrar</button>
-        </form>
-    </div>
-</div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const trails = [
-        {
-            id: 1,
-            name: "Trilha do Sino",
-            park: "Parque Nacional da Serra dos Órgãos",
-            difficulty: "Difícil",
-            duration: "6-8 horas",
-            distance: "11 km (ida)",
-            address: "Entrada do PARNASO, Teresópolis, RJ",
-            image: "images/trilha-sino.jpg",
-            description: "Uma das trilhas mais famosas do Brasil, levando ao cume do Dedo de Deus e oferecendo vistas espetaculares.",
-            biodiversity: "Campos de Altitude, Orquídeas raras, Gralha-azul e Beija-flor-de-gravata-verde."
-        },
-        {
-            id: 2,
-            name: "Travessia Petrópolis-Teresópolis",
-            park: "Parque Nacional da Serra dos Órgãos",
-            difficulty: "Difícil",
-            duration: "3 dias",
-            distance: "30 km",
-            address: "Início em Petrópolis, fim em Teresópolis",
-            image: "images/travessia-petro-tere.jpg",
-            description: "Considerada a caminhada mais bonita do Brasil, esta travessia de montanha exige planejamento e experiência.",
-            biodiversity: "Mata Atlântica preservada, bromélias e muriquis."
-        },
-        {
-            id: 3,
-            name: "Trilha Cartão Postal",
-            park: "Parque Nacional da Serra dos Órgãos",
-            difficulty: "Fácil",
-            duration: "1 hora",
-            distance: "1.2 km",
-            address: "Sede Teresópolis do PARNASO",
-            image: "images/cartao-postal.jpeg",
-            description: "Trilha suspensa e acessível, ideal para famílias, com vistas incríveis para o Dedo de Deus.",
-            biodiversity: "Pica-paus, tucanos e rica flora da Mata Atlântica."
-        }
-    ];
-
-    const events = [
-        {
-            name: "Observação de Aves Noturnas",
-            date: "Toda última sexta-feira do mês",
-            location: "PARNASO - Sede Teresópolis",
-            description: "Caminhada guiada para observação de corujas e outros animais noturnos. Requer inscrição prévia."
-        }
-    ];
-
-    const trailListContainer = document.getElementById('trail-list');
-    const eventListContainer = document.getElementById('event-list');
-    const trailModal = document.getElementById('trail-modal');
-    const loginModal = document.getElementById('login-modal');
-    const modalBody = document.getElementById('modal-body');
-    const closeButtons = document.querySelectorAll('.close-btn');
-    const adminLoginBtn = document.getElementById('admin-login-btn');
-    const filterButtons = document.querySelectorAll('.filter-btn');
-
-    function displayTrails(filter = 'all') {
-        trailListContainer.innerHTML = '';
-        const filtered = trails.filter(t => filter === 'all' || t.difficulty === filter);
-        filtered.forEach(trail => {
-            const card = document.createElement('div');
-            card.className = 'trail-card';
-            card.dataset.id = trail.id;
-            card.innerHTML = `
-                <img src="${trail.image}" alt="${trail.name}">
-                <div class="trail-card-content">
-                    <h4>${trail.name}</h4>
-                    <p>${trail.park}</p>
-                    <span class="difficulty-badge ${trail.difficulty}">${trail.difficulty}</span>
-                </div>
-            `;
-            trailListContainer.appendChild(card);
-        });
-    }
-
-    function displayEvents() {
-        eventListContainer.innerHTML = '';
-        events.forEach(event => {
-            const item = document.createElement('div');
-            item.className = 'event-item';
-            item.innerHTML = `
-                <h4>${event.name}</h4>
-                <p><strong>Quando:</strong> ${event.date}</p>
-                <p><strong>Onde:</strong> ${event.location}</p>
-                <p>${event.description}</p>
-            `;
-            eventListContainer.appendChild(item);
-        });
-    }
-
-    function openTrailModal(id) {
-        const trail = trails.find(t => t.id == id);
-        if (!trail) return;
-        modalBody.innerHTML = `
-            <img src="${trail.image}" alt="${trail.name}">
-            <h3>${trail.name}</h3>
-            <p>${trail.description}</p>
-            <div class="info-grid">
-                <div class="info-item"><strong>Parque:</strong><br>${trail.park}</div>
-                <div class="info-item"><strong>Dificuldade:</strong><br><span class="difficulty-badge ${trail.difficulty}">${trail.difficulty}</span></div>
-                <div class="info-item"><strong>Duração:</strong><br>${trail.duration}</div>
-                <div class="info-item"><strong>Distância:</strong><br>${trail.distance}</div>
+        <section id="trails">
+            <h3>Parques e Trilhas</h3>
+            <div id="trail-filter">
+                <span>Filtrar por dificuldade:</span>
+                <button class="filter-btn active" data-filter="all">Todas</button>
+                <button class="filter-btn" data-filter="Fácil">Fácil</button>
+                <button class="filter-btn" data-filter="Média">Média</button>
+                <button class="filter-btn" data-filter="Difícil">Difícil</button>
             </div>
-            <h4>Biodiversidade no Local</h4>
-            <p>${trail.biodiversity}</p>
-            <h4>Como Chegar</h4>
-            <p>${trail.address}</p>
-        `;
-        trailModal.style.display = 'block';
-    }
+            <div id="trail-list" class="trail-grid">
+                </div>
+        </section>
 
-    filterButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelector('.filter-btn.active').classList.remove('active');
-            btn.classList.add('active');
-            displayTrails(btn.dataset.filter);
-        });
-    });
+        <section id="events">
+            <h3>Eventos e Novidades</h3>
+            <div id="event-list">
+                </div>
+        </section>
+    </main>
 
-    trailListContainer.addEventListener('click', e => {
-        const card = e.target.closest('.trail-card');
-        if (card) openTrailModal(card.dataset.id);
-    });
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Circuito Tere Verde. Todos os direitos reservados.</p>
+        </div>
+    </footer>
 
-    adminLoginBtn.addEventListener('click', () => loginModal.style.display = 'block');
+    <div id="trail-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <div id="modal-body">
+                </div>
+        </div>
+    </div>
+    
+    <div id="login-modal" class="modal">
+        <div class="modal-content login-modal-content">
+            <span class="close-btn">&times;</span>
+            <h4>Acesso Restrito</h4>
+            <form id="login-form">
+                <label for="username">Usuário:</label>
+                <input type="text" id="username" name="username" required>
+                <label for="password">Senha:</label>
+                <input type="password" id="password" name="password" required minlength="8" maxlength="12">
+                <button type="submit">Entrar</button>
+            </form>
+        </div>
+    </div>
 
-    closeButtons.forEach(btn => btn.addEventListener('click', () => {
-        trailModal.style.display = 'none';
-        loginModal.style.display = 'none';
-    }));
-
-    window.addEventListener('click', e => {
-        if (e.target === trailModal || e.target === loginModal) {
-            trailModal.style.display = 'none';
-            loginModal.style.display = 'none';
-        }
-    });
-
-    document.getElementById('login-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const user = document.getElementById('username').value;
-        alert(`Olá, ${user}!\n\nEm um site real, você seria redirecionado para o painel administrativo. Esta funcionalidade requer um Back-End.`);
-        loginModal.style.display = 'none';
-        this.reset();
-    });
-
-    displayTrails();
-    displayEvents();
-});
-</script>
-
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
